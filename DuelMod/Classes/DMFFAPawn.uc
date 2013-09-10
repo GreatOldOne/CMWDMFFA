@@ -310,7 +310,7 @@ reliable server function AttackOtherPawn(HitInfo Info, string DamageString, opti
 {
 
     local DMFFA G;
-    local DMFFAPlayerController AttackerPC, VictimPC;
+    local DMFFAPlayerController AttackerPC, VictimPC, _AttackerPC;
     local bool bParry, bPassiveBlock, bFlinch, bSpecialFlinch;
     local int i;
     local AOCPRI AttackerPRI, VictimPRI;
@@ -326,9 +326,16 @@ reliable server function AttackOtherPawn(HitInfo Info, string DamageString, opti
 
     G = DMFFA(WorldInfo.Game);
     AttackerPC = DMFFAPlayerController(Controller);
+
+    if (AttackerPC == none && CurrentSiegeWeapon != none)
+        _AttackerPC = DMFFAPlayerController(CurrentSiegeWeapon.Controller); // This will be used for duel related checks only.
+
+    else
+        _AttackerPC = AttackerPC;
+
     VictimPC = DMFFAPlayerController(Info.HitActor.Controller);
 
-    If (!G.bGameEnded && AttackerPC != none && VictimPC != none) // Damage enabled for everyone once a player reaches GoalScore.
+    If (!G.bGameEnded && _AttackerPC != none && VictimPC != none) // Damage enabled for everyone once a player reaches GoalScore.
     {
 
         // No damage outside duel.
@@ -336,10 +343,10 @@ reliable server function AttackOtherPawn(HitInfo Info, string DamageString, opti
         if (!VictimPC.DuelInfo.damageable)
             return;
 
-        if (AttackerPC.DuelInfo.Challenge == none)
+        if (_AttackerPC.DuelInfo.Challenge == none)
             return;
 
-        if (!AttackerPC.CanAttackPlayer(VictimPC))
+        if (!_AttackerPC.CanAttackPlayer(VictimPC))
             return;
 
     }
@@ -388,13 +395,13 @@ reliable server function AttackOtherPawn(HitInfo Info, string DamageString, opti
     if (bCheckParryOnly)
         return;
 
-    switch (AttackerPC.TeamForDuel)
+    switch (_AttackerPC.TeamForDuel)
     {
 
         case EFAC_AGATHA:
         case EFAC_MASON:
 
-            bSameTeam = AttackerPC.TeamForDuel == VictimPC.TeamForDuel;
+            bSameTeam = _AttackerPC.TeamForDuel == VictimPC.TeamForDuel;
             break;
 
         default: // No team considerations if it's not a team duel.
