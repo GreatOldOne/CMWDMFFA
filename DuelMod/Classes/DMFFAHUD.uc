@@ -89,7 +89,7 @@ exec function ShowClassSelect()
 
     SelectedTeam = 2;
     PC.SetReady(false);
-    CharManager = DMFFAGFx_CharacterSelManager(OpenGFxScene(CharManager, class'DMFFAGFx_CharacterSelManager',,,,true, false));
+    CharManager = DMFFAGFx_CharacterSelManager(OpenGFxScene(CharManager, class'DMFFAGFx_CharacterSelManager',,,true, true, false));
     CharManager.StartMenu = 1;
     CharManager.Start();
 

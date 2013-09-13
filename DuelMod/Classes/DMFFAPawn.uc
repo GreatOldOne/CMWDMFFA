@@ -178,8 +178,8 @@ simulated function AOCSetCharacterClassFromInfo(class<AOCFamilyInfo> Info)
 simulated function PlayZMenuVO(int index)
 {
 
-    local DMFFAPlayerController PC;
     local SoundCue voSound;
+    local DMFFAPlayerController PC;
 
     if (WorldInfo.NetMode == NM_DedicatedServer)
         return;
@@ -187,17 +187,20 @@ simulated function PlayZMenuVO(int index)
     if (!VOSoundComp.IsPlaying() && Physics != PHYS_Falling && !bIsBurning)
     {
 
-        PC = DMFFAPlayerController(Controller);
-
-        if (PC != none) // Update target player as soon as voicechat is triggered.
-            PC.UpdateTargetPlayerController();
-
         class<AOCPawnSoundGroup>(SoundGroupClass).static.getAOCZMenuVO(self, index, voSound);
         VOSoundComp.SoundCue = voSound;
         VOSoundComp.Play();
 
         if (Role < ROLE_Authority || WorldInfo.NetMode == NM_STANDALONE)
         {
+
+            PC = DMFFAPlayerController(Controller);
+
+            if (PC == none && CurrentSiegeWeapon != none)
+                PC = DMFFAPlayerController(CurrentSiegeWeapon.Controller);
+
+            if (PC != none) // Update target player as soon as voicechat is triggered.
+                PC.UpdateTargetPlayerController();
 
             s_PlayVO(voSound);
             TeamDuelProcessZMenuVO(index);
@@ -219,8 +222,8 @@ simulated function PlayZMenuVO(int index)
 simulated function PlayXMenuVO(int index)
 {
 
-    local DMFFAPlayerController PC;
     local SoundCue voSound;
+    local DMFFAPlayerController PC;
 
     if (WorldInfo.NetMode == NM_DedicatedServer)
         return;
@@ -228,17 +231,20 @@ simulated function PlayXMenuVO(int index)
     if (!VOSoundComp.IsPlaying() && Physics != PHYS_Falling && !bIsBurning)
     {
 
-        PC = DMFFAPlayerController(Controller);
-
-        if (PC != none) // Update target player as soon as voicechat is triggered.
-            PC.UpdateTargetPlayerController();
-
         class<AOCPawnSoundGroup>(SoundGroupClass).static.getAOCXMenuVO(self, index, voSound);   
         VOSoundComp.SoundCue = voSound;
         VOSoundComp.Play();
 
         if (Role < ROLE_Authority || WorldInfo.NetMode == NM_STANDALONE)
         {
+
+            PC = DMFFAPlayerController(Controller);
+
+            if (PC == none && CurrentSiegeWeapon != none)
+                PC = DMFFAPlayerController(CurrentSiegeWeapon.Controller);
+
+            if (PC != none) // Update target player as soon as voicechat is triggered.
+                PC.UpdateTargetPlayerController();
 
             s_PlayVO(voSound);
             TeamDuelProcessXMenuVO(index);
@@ -264,6 +270,9 @@ simulated function PlayBattleCry(int BC)
 
     PC = DMFFAPlayerController(Controller);
 
+    if (PC == none && CurrentSiegeWeapon != none)
+        PC = DMFFAPlayerController(CurrentSiegeWeapon.Controller);
+
     if (PC != none) // Update target player as soon as battlecry is triggered.
         PC.UpdateTargetPlayerController();
 
@@ -286,15 +295,20 @@ simulated function TakeFallingDamage()
     local DMFFA G;
     local DMFFAPlayerController PC;
 
-    G = DMFFA(WorldInfo.Game);
-
-    if (G != none && !G.bGameEnded) // Full fall damage once a player reaches GoalScore.
+    if (Role == ROLE_Authority)
     {
 
-        PC = DMFFAPlayerController(Controller);
+        G = DMFFA(WorldInfo.Game);
 
-        if (PC != none && !PC.DuelInfo.damageable) // No fall damage outside duel.
-            return;
+        if (G != none && !G.bGameEnded) // Full fall damage once a player reaches GoalScore.
+        {
+
+            PC = DMFFAPlayerController(Controller);
+
+            if (PC != none && !PC.DuelInfo.damageable) // No fall damage outside duel.
+                return;
+
+        }
 
     }
 
@@ -324,6 +338,9 @@ reliable server function AttackOtherPawn(HitInfo Info, string DamageString, opti
     local bool bOnFire;
     local IAOCAIListener AIList;
 
+    if (!PerformAttackSSSC(Info) && WorldInfo.NetMode != NM_Standalone)
+        return;
+
     G = DMFFA(WorldInfo.Game);
     AttackerPC = DMFFAPlayerController(Controller);
 
@@ -350,9 +367,6 @@ reliable server function AttackOtherPawn(HitInfo Info, string DamageString, opti
             return;
 
     }
-
-    if (!PerformAttackSSSC(Info) && WorldInfo.NetMode != NM_Standalone)
-        return;
 
     // Check if fists...fists can only blocks fists.
     if (AOCWeapon_Fists(Info.HitActor.Weapon) != none && class<AOCDmgType_Fists>(Info.DamageType) == none)
@@ -395,13 +409,13 @@ reliable server function AttackOtherPawn(HitInfo Info, string DamageString, opti
     if (bCheckParryOnly)
         return;
 
-    switch (_AttackerPC.TeamForDuel)
+    switch (TeamForDuel)
     {
 
         case EFAC_AGATHA:
         case EFAC_MASON:
 
-            bSameTeam = _AttackerPC.TeamForDuel == VictimPC.TeamForDuel;
+            bSameTeam = TeamForDuel == DMFFAPawn(Info.HitActor).TeamForDuel;
             break;
 
         default: // No team considerations if it's not a team duel.
@@ -683,31 +697,13 @@ reliable server function AttackOtherPawn(HitInfo Info, string DamageString, opti
     {
 
         // Make sure this wasn't a team kill.
-        if (!bSameTeam)
+        if (!bSameTeam && AttackerPC.StatWrapper != none && Info.UsedWeapon < 2)
         {
 
-            if (AttackerPC.StatWrapper != none)
-            {
-
-                if (Info.UsedWeapon < 2)
-                {
-
-                    AttackerPC.StatWrapper.IncrementKillStats(((Info.UsedWeapon == 0) ? PrimaryWeapon : SecondaryWeapon), 
-                                                              PawnFamily,
-                                                              Info.HitActor.PawnFamily,
-                                                              class<AOCWeapon>(VictimWeaponAttachment.WeaponClass));
-
-                }
-
-            }
-
-            else
-            {
-
-                AttackerPRI.StatDebugMsg = "Attack Other Pawn -- StatWrapper Was None -- Reinitializing";
-                AttackerPC.ServerInitStatWrapper();
-
-            }
+            AttackerPC.StatWrapper.IncrementKillStats(((Info.UsedWeapon == 0) ? PrimaryWeapon : SecondaryWeapon), 
+                                                      PawnFamily,
+                                                      Info.HitActor.PawnFamily,
+                                                      class<AOCWeapon>(VictimWeaponAttachment.WeaponClass));
 
         }
 

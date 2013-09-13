@@ -53,7 +53,7 @@ function UpdateLocks()
     {
 
         if (IsBetaApp)
-            Tmp.UnlockExpLevel = 0;
+            Tmp.UnlockExpLevel = 0.f;
 
         TmpDisable = (!Tmp.bEnabledDefault || PC.StatWrapper.CacheAllExpValues[Tmp.CheckLimitExpGroup] < Tmp.UnlockExpLevel);
         PrimarySelectWidgets[i].Obj.SetVisible(true);
@@ -100,7 +100,7 @@ function UpdateLocks()
 
     }
 
-    for (i = i+1; i < 12; i++)
+    for (i = i+1; i < ArrayCount(PrimarySelectWidgets); i++)
     {
 
         PrimarySelectWidgets[i].Obj.SetVisible(false);
@@ -115,7 +115,7 @@ function UpdateLocks()
     {
 
         if (IsBetaApp)
-            Tmp.UnlockExpLevel = 0;
+            Tmp.UnlockExpLevel = 0.f;
 
         TmpDisable = (!Tmp.bEnabledDefault || PC.StatWrapper.CacheAllExpValues[Tmp.CheckLimitExpGroup] < Tmp.UnlockExpLevel);
         SecondarySelectWidgets[i].Obj.SetVisible(true);
@@ -162,7 +162,7 @@ function UpdateLocks()
 
     }
 
-    for (i = i+1; i < 6; i++)
+    for (i = i+1; i < ArrayCount(SecondarySelectWidgets); i++)
     {
 
         SecondarySelectWidgets[i].Obj.SetVisible(false);
@@ -198,7 +198,7 @@ function UpdateLocks()
 
     }
 
-    for (i = i+1; i < 7; i++)
+    for (i = i+1; i < ArrayCount(TertiarySelectWidgets); i++)
     {
 
         TertiarySelectWidgets[i].Obj.SetVisible(false);
@@ -234,7 +234,7 @@ function SelectRandomLoadout()
 
     // Make list of primaries that are available and choose one randomly.
 
-    for (i = 0; i < 12; i++)
+    for (i = 0; i < ArrayCount(PrimarySelectWidgets); i++)
     {
 
         if (PrimarySelectWidgets[i].bEnabled)
@@ -247,7 +247,7 @@ function SelectRandomLoadout()
 
     // Do the same for secondaries.
 
-    for (i = 0; i < 6; i++)
+    for (i = 0; i < ArrayCount(SecondarySelectWidgets); i++)
     {
 
         if (SecondarySelectWidgets[i].bEnabled)
@@ -262,7 +262,7 @@ function SelectRandomLoadout()
 
     UpdateLocks();
 
-    for (i = 0; i < 7; i++)
+    for (i = 0; i < ArrayCount(TertiarySelectWidgets); i++)
     {
 
         if (TertiarySelectWidgets[i].bEnabled)

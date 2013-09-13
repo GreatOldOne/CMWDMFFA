@@ -1420,7 +1420,8 @@ reliable client function ClientUpdateCurrentCustomizationInfo()
 reliable server function ServerUpdateCurrentCustomizationInfo(SCustomizationChoice NewCustomization, EAOCFaction Faction, EAOCClass ClassReference)
 {
 
-    ServerUpdateCustomizationInfo(NewCustomization);
+    if (Faction == TeamForDuel && ClassReference == CurrentFamilyInfo.default.ClassReference)
+        ServerUpdateCustomizationInfo(NewCustomization);
 
 }
 

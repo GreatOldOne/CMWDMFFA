@@ -45,13 +45,7 @@ function SetPlayerNameOnScoreboard(DMFFAPRI PlayerPRI, GFxObject PlayerObj, opti
     local string PlayerHighlight;
     local DuelTeamHighlight DuelTeamHighlights;
 
-    if (Manager == none || Manager.PlayerOwner == none)
-        return;
-
     MyPRI = DMFFAPRI(Manager.PlayerOwner.PlayerReplicationInfo);
-
-    if (MyPRI == none)
-        return;
 
     if (IsSelectedPlayer)
     {
@@ -274,7 +268,6 @@ function GrabCurrentUpdatedValues(optional bool bInitialView = true)
     local DMFFAHUD MyHUD;
     local DMFFAPRI MyPRI, PlayerPRI, SelectedPRI;
     local int AgathaPlayerScore, MasonPlayerScore;
-    local array<int> AgathaDuelTeams, MasonDuelTeams;
     local GFxObject AgathaDataProvider, MasonDataProvider;
     local PlayerReplicationInfo TmpPRI;
     local GFxObject PlayerObj;
@@ -416,11 +409,8 @@ function GrabCurrentUpdatedValues(optional bool bInitialView = true)
 
             AgathaDataProvider.SetElementObject(AgathaPlayerCount++, PlayerObj);
 
-            if (PlayerPRI.DuelTeamID == NO_DUEL_TEAM_ID) // Players with no team adds +1 to duel team count.
+            if (PlayerPRI.DuelTeamID == NO_DUEL_TEAM_ID || PlayerPRI.IsDuelLeader) // Duel team count.
                 AgathaPlayerScore++;
-
-            else if (AgathaDuelTeams.Find(PlayerPRI.DuelTeamID) == INDEX_NONE)
-                AgathaDuelTeams.AddItem(PlayerPRI.DuelTeamID); // Add every unique duel team ID.
 
         }
 
@@ -444,21 +434,17 @@ function GrabCurrentUpdatedValues(optional bool bInitialView = true)
 
             MasonDataProvider.SetElementObject(MasonPlayerCount++, PlayerObj);
 
-            if (PlayerPRI.DuelTeamID == NO_DUEL_TEAM_ID) // Players with no team adds +1 to duel team count.
+            if (PlayerPRI.DuelTeamID == NO_DUEL_TEAM_ID || PlayerPRI.IsDuelLeader) // Duel team count.
                 MasonPlayerScore++;
-
-            else if (MasonDuelTeams.Find(PlayerPRI.DuelTeamID) == INDEX_NONE)
-                MasonDuelTeams.AddItem(PlayerPRI.DuelTeamID); // Add every unique duel team ID.
-
 
         }
 
     }
 
     AgathaCount.SetText(Repl(Localize("Common", "NumPlayers", "AOCUI"), "{NUM}", string(AgathaPlayerCount), false));
-    AgathaScore.SetText(string(AgathaPlayerScore + AgathaDuelTeams.Length));
+    AgathaScore.SetText(string(AgathaPlayerScore));
     MasonCount.SetText(Repl(Localize("Common", "NumPlayers", "AOCUI"), "{NUM}", string(MasonPlayerCount), false));
-    MasonScore.SetText(string(MasonPlayerScore + MasonDuelTeams.Length));
+    MasonScore.SetText(string(MasonPlayerScore));
     AgathaList.SetObject("dataProvider", AgathaDataProvider);
     MasonList.SetObject("dataProvider", MasonDataProvider);
 
