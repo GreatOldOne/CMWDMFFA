@@ -162,7 +162,7 @@ If you intend to compile and cook this project yourself, do the following:
 6. Open it with the editor: Binaries\Win64\UDK.exe editor
 7. Go to View -> World Properties.
 8. On Game Type set a supported game type to DMFFA, save and close.
-9. Now cook: Binaries\Win64\UDK.exe CookPackages -log -nohomedir -platform=PC -SDKPackage=DuelMod <DummyMap> -multilanguagecook=int
+9. Now cook: Binaries\Win64\UDK.exe CookPackages -log -nohomedir -platform=PC -SDKPackage=DuelMod [DummyMap] -multilanguagecook=int
 10. Once cooked, go to UDKGame/CookedSDK/DuelMod and delete everything but DuelMod.u.
 11. It's now ready for deployment.
 
