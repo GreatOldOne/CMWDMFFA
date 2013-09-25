@@ -48,8 +48,8 @@ Once an entire team is dead, the duel is over.
 #### Spectator ####
 
 Similar to other game modes, with a few basic changes.
-You can only spectate your team when you are not a voluntary spectator.
-As a voluntary spectator you will automatically follow your view target across dimensions, and going back to free look mode will bring you back to the general non-dueling reality.
+If you are not a voluntary spectator, you can only spectate your own duel team (when dueling).
+As a voluntary spectator you will automatically follow your view target across realities, and going back to free look mode will bring you back to the general non-dueling reality.
 
 #### Private Duels ####
 
@@ -59,12 +59,12 @@ There are three possible values for Private Duels (set by the server admin):
 
 * [0] This value disables Private Duels.
 * [1] This value means there will be two different realities. One for dueling and another one for non-dueling.
-* [2] This value means there will be a non-dueling reality and every duel will take in a completely new and reserved reality.
+* [2] This value means there will be a non-dueling reality and every duel will take place in a completely new and reserved reality.
 
 ###### What are realities? ######
 
-Consider them a virtual zone, or a parallel universe. A player in reality x cannot interact nor see a player in reality y.
-This mechanism improves performace, aswell as provide full privacy to players during duel.
+Consider them a virtual zone, or a parallel universe. A player in reality x cannot interact with nor see a player in reality y.
+This mechanism improves performace, aswell as provide privacy to players during duel.
 It's highly recommended to have Private Duels set to 2 for a Team Duels enabled server.
 
 #### Team Duels ####
@@ -73,11 +73,11 @@ Team Duels functions just like a mini, dynamic LTS (Last Team Standing) mode.
 
 Team Duels uses voice chat commands to build and manage duel teams.
 
-* Voice chat/Follow me (as duel team leader): Invite a player to your team.
-* Voice chat/Yes (while not in a team and invited): Accept a team invitation and join said team.
-* Voice chat/No (while not in a team and invited): Decline a team invitation.
-* Voice chat/Sorry (while in a team): As the duel team leader, targetting a player in your team and executing this command will kick said player from your team. However, executing this command as a non-duel team leader will cause you to leave your current team.
-* Voice chat/Retreat (as duel team leader): Disband your duel team.
+* Voice chat/Follow me (as duel team leader): Invites a player to your team.
+* Voice chat/Yes (while not in a team and invited): Accepts a team invitation and join said team.
+* Voice chat/No (while not in a team and invited): Declines a team invitation.
+* Voice chat/Sorry (while in a team): As the duel team leader, targeting a player in your team and executing this command will kick said player from your team. However, executing this command as a non-duel team leader will cause you to leave your current team.
+* Voice chat/Retreat (as duel team leader): Disbands your duel team.
 
 Only the team leader can challenge others or accept challenges.
 
@@ -107,13 +107,13 @@ Some elements of the HUD were changed to provide better feedback to players.
 * Scoreboard: Team scores to number of duel teams (duelable players).
 * Scoreboard: Class icon to King icon for players leading a duel team.
 * Scoreboard: Different colors for player names when in a team:
-  * Blue: Your leader
-  * Dark green: Another team leader
-  * Cyan: Member of your team
-  * Green: Member of another team
+  * Blue: Your leader.
+  * Dark green: Another team leader.
+  * Cyan: Member of your team.
+  * Green: Member of another team.
 * Scoreboard: Objective score to Team Size.
 * Scoreboard: Accuracy ratio to Acurracy ratio percentage.
-* Scoreboard: Objective box will now display the team's highest score aswell.
+* Scoreboard: Objective box will also display the team's highest score.
 
 #### GetDuelInfo ####
 
@@ -134,7 +134,7 @@ For a server running through the dedicated server tool, instead of UDKGame/Cooke
 
 For a server running without the dedicated server tool, open My Documents/My Games/Chivalry Medieval Warfare Beta/UDKGame/Config/UDKGame.ini.
 For a server running through the dedicated server tool, open chivalry_ded_server/UDKGame/Config/PCServer-UDKGame.ini.
-Replace every GameType="AOC.AOCFFA" with GameType="DuelMod.DMFFA".
+Replace every GameType="AOC.AOCFFA" with GameType="DuelMod.DMFFA" within every DefaultMapPrefixes.
 
 For a server running through the dedicated server tool, open chivalry_ded_server/UDKGame/Config/PCServer-UDKEngine.ini.
 On [Engine.ScriptPackages] add NativePackages=DuelMod.
@@ -168,17 +168,16 @@ If you intend to compile and cook this project yourself, do the following:
 
 ## Dependencies ##
 
-1. Chivalry: Medieval Warfare
-2. Chivalry: Medieval Warfare Beta
+1. Chivalry: Medieval Warfare Beta
 
 ## Contributing or using this code base ##
 
 If you want to contribute to the project or use it for your own, do the following:
 
 1. [Fork](https://github.com/GreatOldOne/CMWDMFFA/fork) the project on GitHub.
-  2. Create a new branch for your changes.
-  3. Make sure everything is properly tested and organized.
-  4. Send a [pull request](https://help.github.com/articles/creating-a-pull-request) to GreatOldOne/CMWDMFFA.
+2. Create a new branch for your changes.
+3. Make sure everything is properly tested and organized.
+4. Send a [pull request](https://help.github.com/articles/creating-a-pull-request) to GreatOldOne/CMWDMFFA.
 
 Steps 2, 3 and 4 are only required if you intend to contribute to this project.
 
