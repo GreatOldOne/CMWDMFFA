@@ -24,8 +24,8 @@ This mod brings a dynamic "pick your opponent" duel system into Chivalry Medieva
 
 #### Dueling ####
 
-The dueling system is pretty straight forward.
-To challenge a player to a duel, you must target him/her and battlecry. He/she must do the same to accept your challenge.
+The dueling system is pretty straight forward.  
+To challenge a player to a duel, you must target him/her and battlecry. He/she must do the same to accept your challenge.  
 You can revoke your challenge by battlecrying on the same opponent for a second time, but only before the duel starts.
 
 Once a duel is set, there will be two countdowns:
@@ -33,12 +33,12 @@ Once a duel is set, there will be two countdowns:
 1. Initializing Duel/Switching Reality
 2. Prepare to fight
 
-For this stage to begin, both teams must be alive.
+For this stage to begin, both teams must be alive.  
 It's also important to note that in a team duel, one team goes Agatha and the other one goes Mason.
 
 If one of the leaders die during the first countdown, the duel will be cancelled and neither team scores.
 
-Once the duel has begun, you can damage your opponent.
+Once the duel has begun, you can damage your opponent.  
 You will not be able to respawn until the duel is over (in the case of a team duel).
 
 If a leader disconnects or goes spectator during a duel, the opposing team automatically wins.
@@ -47,8 +47,8 @@ Once an entire team is dead, the duel is over.
 
 #### Spectator ####
 
-Similar to other game modes, with a few basic changes.
-If you are not a voluntary spectator, you can only spectate your own duel team (when dueling).
+Similar to other game modes, with a few basic changes.  
+If you are not a voluntary spectator, you can only spectate your own duel team (when dueling).  
 As a voluntary spectator you will automatically follow your view target across realities, and going back to free look mode will bring you back to the general non-dueling reality.
 
 #### Private Duels ####
@@ -63,8 +63,8 @@ There are three possible values for Private Duels (set by the server admin):
 
 ###### What are realities? ######
 
-Consider them a virtual zone, or a parallel universe. A player in reality x cannot interact with nor see a player in reality y.
-This mechanism improves performace, aswell as provide privacy to players during duel.
+Consider them a virtual zone, or a parallel universe. A player in reality x cannot interact with nor see a player in reality y.  
+This mechanism improves performace, aswell as provide privacy to players during duel.  
 It's highly recommended to have Private Duels set to 2 for a Team Duels enabled server.
 
 #### Team Duels ####
@@ -85,15 +85,15 @@ Going spectator or disconnecting as the team leader will automatically disband y
 
 #### Goal Score ####
 
-Goal Score is the only way for a map to end, besides manual map changing (voting, admin, etc).
+Goal Score is the only way for a map to end, besides manual map changing (voting, admin, etc).  
 A Goal Score of 0 means the map will never end on its own.
 
-A player will earn +1 score for each duel he/she wins, regardless of team size.
+A player will earn +1 score for each duel he/she wins, regardless of team size.  
 Every member of a team will earn +1 score for his team's victory, even if the player died during duel.
 
 #### Duel Team Chat ####
 
-Team chat was changed to allow duel teams to communicate between themselves.
+Team chat was changed to allow duel teams to communicate between themselves.  
 Spectators can also use team chat to communicate between voluntary spectators.
 
 #### HUD Modifications ####
@@ -129,14 +129,14 @@ Simply put DuelMod directory into UDKGame/CookedSDK.
 
 #### Server ####
 
-For a server running without the dedicated server tool, do the same as you did for the client.
+For a server running without the dedicated server tool, do the same as you did for the client.  
 For a server running through the dedicated server tool, instead of UDKGame/CookedSDK, put DuelMod directory into chivalry_ded_server/UDKGame/CookedPCServer.
 
-For a server running without the dedicated server tool, open My Documents/My Games/Chivalry Medieval Warfare Beta/UDKGame/Config/UDKGame.ini.
-For a server running through the dedicated server tool, open chivalry_ded_server/UDKGame/Config/PCServer-UDKGame.ini.
+For a server running without the dedicated server tool, open My Documents/My Games/Chivalry Medieval Warfare Beta/UDKGame/Config/UDKGame.ini.  
+For a server running through the dedicated server tool, open chivalry_ded_server/UDKGame/Config/PCServer-UDKGame.ini.  
 Replace every GameType="AOC.AOCFFA" with GameType="DuelMod.DMFFA" within every DefaultMapPrefixes.
 
-For a server running through the dedicated server tool, open chivalry_ded_server/UDKGame/Config/PCServer-UDKEngine.ini.
+For a server running through the dedicated server tool, open chivalry_ded_server/UDKGame/Config/PCServer-UDKEngine.ini.  
 On [Engine.ScriptPackages] add NativePackages=DuelMod.
 
 Run the server for the first time with a FFA map on the command line to generate its configuration.
